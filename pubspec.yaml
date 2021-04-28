@@ -24,8 +24,35 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_auth: ^0.18.4
+  firebase_core: ^0.5.3
   flutter_signin_button: ^1.1.0
-
+  razorpay_flutter: ^1.2.2
+  firebase_dynamic_links: ^0.5.0+11
+  flutter_barcode_scanner: ^1.0.1
+  barcode_widget: ^1.5.0
+  qrscan: ^0.2.17
+  barcode_scan: ^1.0.0
+  url_launcher: ^5.7.10
+  uiblock: ^2.0.0
+  flutter_svg: ^0.19.1
+  provider: ^4.3.1
+  contacts_service: ^0.3.10
+  permission_handler: ^5.0.1+1
+  http: ^0.12.2
+  flutter_sms: ^2.0.0
+  google_sign_in: ^4.5.9
+  dio: ^3.0.9
+  path_provider: ^1.6.21
+  qr_flutter: ^3.2.0
+  wc_flutter_share: ^0.2.2
+  fluttertoast: ^7.1.8
+  upi_india: ^2.2.0
+  upi_pay: ^0.2.4
+  firebase_storage: ^5.2.0
+  image_picker: ^0.6.7+15
+  cloud_firestore: ^0.14.4
+  file_picker: ^2.1.1
+  firebase_database: ^4.4.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -51,6 +78,7 @@ flutter:
     - images/welcome.png
     - images/background.png
     - images/signup.jpg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
