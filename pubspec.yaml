@@ -46,13 +46,12 @@ dependencies:
   qr_flutter: ^3.2.0
   wc_flutter_share: ^0.2.2
   fluttertoast: ^7.1.8
-  upi_india: ^2.2.0
-  upi_pay: ^0.2.4
   firebase_storage: ^5.2.0
   image_picker: ^0.6.7+15
   cloud_firestore: ^0.14.4
   file_picker: ^2.1.1
   firebase_database: ^4.4.0
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

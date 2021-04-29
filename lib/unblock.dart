@@ -18,7 +18,7 @@ class unblock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'UI Block',
+      title: 'UI Block Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -28,30 +28,29 @@ class unblock extends StatelessWidget {
             foregroundColor: MaterialStateProperty.all(Colors.black),
           ),
         ),
+
       ),
-      home: Unblock(),
+      home: MyHomePage(),
     );
   }
 }
 
-class Unblock extends StatefulWidget {
-
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key}) : super(key: key);
 
   @override
-  _Unblock createState() => _Unblock();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _Unblock extends State<Unblock> {
+class _MyHomePageState extends State<MyHomePage> {
+  // could be anything other than string,
+  // depends on your BackdropModalRoute<T> return type
   String backdropResult = '';
 
   // ValueListenable<int> _listenable = ValueListenable();
   ValueNotifier<int> _counter = ValueNotifier<int>(0);
 
   bool showLoader = false;
-
-  back() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +66,7 @@ class _Unblock extends State<Unblock> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              RaisedButton(
-                onPressed: back(),
-                color: Colors.blue,
-                child: Text('Show History'),
-              ),
+              
               TextButton(
                 child: Text('Load Async'),
                 onPressed: () {
@@ -111,6 +106,7 @@ class _Unblock extends State<Unblock> {
 
                     SizedBox(height: 24),
 
+                    // default dissmissible
                     _buildDefaultDissmissible(context),
 
                     SizedBox(height: 24),
@@ -125,6 +121,7 @@ class _Unblock extends State<Unblock> {
 
                     SizedBox(height: 24),
 
+                    // default dissmissible with data
                     _buildDefaultDissmissibleWithData(context),
                   ],
                 ),

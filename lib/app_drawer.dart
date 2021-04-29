@@ -49,16 +49,13 @@ class _AppDrawerState extends State<AppDrawer> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Contact()));
   }
   navigateTounblock_upi() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Unblock()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => unblock()));
   }
   navigateTofaqs() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => faqs()));
   }
   navigateToinvite() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => invite()));
-  }
-  navigateToderegister() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => my_account()));
   }
 
 

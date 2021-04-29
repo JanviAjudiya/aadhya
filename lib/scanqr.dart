@@ -1,68 +1,85 @@
-import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/cupertino.dart';
 
 class ScanScreen extends StatefulWidget {
   @override
-  _ScanState createState() => new _ScanState();
+  _ScanScreenState createState() => _ScanScreenState();
 }
 
-class _ScanState extends State<ScanScreen> {
-  String barcode = "";
-
-  @override
-  initState() {
-    super.initState();
-  }
-
+class _ScanScreenState extends State<ScanScreen> {
+  double height, width;
+  String qrString = "Not Scanned";
   @override
   Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: new AppBar(
-          title: new Text('QR Code Scanner'),
-        ),
-        body: new Center(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: RaisedButton(
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    splashColor: Colors.blueGrey,
-                    onPressed: scan,
-                    child: const Text('START CAMERA SCAN')
-                ),
-              )
-              ,
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Text(barcode, textAlign: TextAlign.center,),
-              )
-              ,
-            ],
+      appBar: AppBar(
+        title: Text("Scan QR Code"),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(
+            qrString,
+            style: TextStyle(color: Colors.blue, fontSize: 30),
           ),
-        ));
+          ElevatedButton(
+            onPressed: scanQR,
+            child: Text("Scan QR Code"),
+          ),
+          SizedBox(width: width),
+        ],
+      ),
+    );
   }
 
-  Future scan() async {
-    try {
-      String barcode = await BarcodeScanner.scan();
-      setState(() => this.barcode = barcode);
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
-        setState(() {
-          this.barcode = 'The user did not grant the camera permission!';
+  Future<void> scanQR() async {
+    final PermissionStatus permissionStatus = await _getPermission();
+    if (permissionStatus == PermissionStatus.granted) {
+      try {
+        FlutterBarcodeScanner.scanBarcode(
+            "#2A99CF", "Cancel", true, ScanMode.QR)
+            .then((value) {
+          setState(() {
+            qrString = value;
+          });
         });
-      } else {
-        setState(() => this.barcode = 'Unknown error: $e');
+      } catch (e) {
+        setState(() {
+          qrString = "unable to read the qr";
+        });
       }
-    } on FormatException{
-      setState(() => this.barcode = 'null (User returned using the "back"-button before scanning anything. Result)');
-    } catch (e) {
-      setState(() => this.barcode = 'Unknown error: $e');
     }
+    else {
+      //If permissions have been denied show standard cupertino alert dialog
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => CupertinoAlertDialog(
+            title: Text('Permissions error'),
+            content: Text('Please enable contacts access '
+                'permission in system settings'),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          ));
+    }
+  }
+}
+Future<PermissionStatus> _getPermission() async {
+  final PermissionStatus permission = await Permission.camera.status;
+  if (permission != PermissionStatus.granted &&
+      permission != PermissionStatus.denied) {
+    final Map<Permission, PermissionStatus> permissionStatus =
+    await [Permission.camera].request();
+    return permissionStatus[Permission.camera] ??
+        PermissionStatus.undetermined;
+  } else {
+    return permission;
   }
 }
