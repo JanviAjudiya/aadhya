@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sgp/HomePage.dart';
 import 'package:uiblock/default_uiblock_loader.dart';
 import 'package:uiblock/uiblock.dart';
 
@@ -28,7 +29,7 @@ class unblock extends StatelessWidget {
           ),
         ),
       ),
-      home: Unblock(),
+      home: HomePage(),
     );
   }
 }
@@ -41,8 +42,6 @@ class Unblock extends StatefulWidget {
 }
 
 class _Unblock extends State<Unblock> {
-  // could be anything other than string,
-  // depends on your BackdropModalRoute<T> return type
   String backdropResult = '';
 
   // ValueListenable<int> _listenable = ValueListenable();
@@ -103,7 +102,6 @@ class _Unblock extends State<Unblock> {
 
                     SizedBox(height: 24),
 
-                    // default dissmissible
                     _buildDefaultDissmissible(context),
 
                     SizedBox(height: 24),
@@ -118,7 +116,6 @@ class _Unblock extends State<Unblock> {
 
                     SizedBox(height: 24),
 
-                    // default dissmissible with data
                     _buildDefaultDissmissibleWithData(context),
                   ],
                 ),
@@ -134,7 +131,7 @@ class _Unblock extends State<Unblock> {
     return Container(
       child: TextButton(
         child: Text(
-          "Default UIBlock (Dissmiss Disabled)",
+          "Default UIBlock (Dismiss Disabled)",
           textAlign: TextAlign.center,
         ),
         onPressed: () async {
@@ -152,7 +149,7 @@ class _Unblock extends State<Unblock> {
     return Container(
       child: TextButton(
         child: Text(
-          "Default UIBlock (Dissmiss Enabled)",
+          "Default UIBlock (Dismiss Enabled)",
           textAlign: TextAlign.center,
         ),
         onPressed: () async {
@@ -162,7 +159,7 @@ class _Unblock extends State<Unblock> {
             loadingTextWidget: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Press back to dissmiss',
+                'Press back to dismiss',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -181,7 +178,7 @@ class _Unblock extends State<Unblock> {
     return Container(
       child: TextButton(
         child: Text(
-          "Default UIBlock With Text (Dissmiss Disabled)",
+          "Default UIBlock With Text (Dismiss Disabled)",
           textAlign: TextAlign.center,
         ),
         onPressed: () async {
@@ -278,7 +275,7 @@ class _Unblock extends State<Unblock> {
     return Container(
       child: TextButton(
         child: Text(
-          "Default UIBlock (Dissmiss Enabled) With Data",
+          "Default UIBlock (Dismiss Enabled) With Data",
           textAlign: TextAlign.center,
         ),
         onPressed: () async {
@@ -291,7 +288,7 @@ class _Unblock extends State<Unblock> {
                   UIBlock.unblockWithData(context, "hello world");
                 },
                 child: Text(
-                  'Press here to dissmiss with data. Back for null',
+                  'Press here to dismiss with data. Back for null',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
