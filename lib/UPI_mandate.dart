@@ -1,147 +1,82 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+const _url = 'https://paytm.com/paytmwallet';
+const url = 'https://www.paypal.com/in/signin';
+const url1 = 'https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user';
 
 class UPI_mandate extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final title = 'UPI Mandate';
-
     return MaterialApp(
-      title: title,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-        ),
-        body: Container(
-          margin: EdgeInsets.all(20),
-          child: ListView(
+      title: 'UPI Transactions',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'UPI Transactions'),
+    );
+  }
+}
 
-            children: <Widget>[
-              Container(
-                height: 40.0,
-                color: Colors.blue[100],
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.note_add_outlined,
-                        color: Colors.grey[800],
-                      ),
-                      onPressed: () {},
-                    ),
-                    Text("Create New",
-                        style: TextStyle(color: Colors.grey[800], )),
-                    IconButton(
-                      icon: Icon(
-                        Icons.navigate_next_outlined,
-                        color: Colors.grey[800],
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
 
-                      ),
-                      onPressed: (){},
-                      padding: EdgeInsets.only(left: 182.0),
-                    )
+  final String title;
 
-                  ],
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
 
-                ),
+class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(25),
+              child: FlatButton(
+                child: Text('Pay with PayTM', style: TextStyle(fontSize: 20.0),),
+                color: Colors.blueAccent,
+                textColor: Colors.white,
+                onPressed: _launchURL,
               ),
-              SizedBox(
-                height: 20.0,
+            ),
+            Container(
+              margin: EdgeInsets.all(25),
+              child: FlatButton(
+                child: Text('Pay with PayPal', style: TextStyle(fontSize: 20.0),),
+                color: Colors.blueAccent,
+                textColor: Colors.white,
+                onPressed: _launchURL1,
               ),
-              Container(
-                height: 40.0,
-                color: Colors.blue[100],
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.file_upload,
-                        color: Colors.grey[800],
-                      ),
-                      onPressed: () {},
-                    ),
-                    Text("Request Received",
-                        style: TextStyle(color: Colors.grey[800], )),
-                    IconButton(
-                      icon: Icon(
-                        Icons.navigate_next_outlined,
-                        color: Colors.grey[800],
-
-                      ),
-                      onPressed: () {},
-                      padding: EdgeInsets.only(left: 142.0),
-                    )
-
-                  ],
-
-                ),
+            ),
+            Container(
+              margin: EdgeInsets.all(25),
+              child: FlatButton(
+                child: Text('Pay with GooglePay', style: TextStyle(fontSize: 20.0),),
+                color: Colors.blueAccent,
+                textColor: Colors.white,
+                onPressed: _launchURL2,
               ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Container(
-                height: 40.0,
-                color: Colors.blue[100],
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.assignment_returned_outlined,
-                        color: Colors.grey[800],
-                      ),
-                      onPressed: () {},
-                    ),
-                    Text("My Mandates",
-                        style: TextStyle(color: Colors.grey[800], )),
-                    IconButton(
-                      icon: Icon(
-                        Icons.navigate_next_outlined,
-                        color: Colors.grey[800],
-
-                      ),
-                      onPressed: () {},
-                      padding: EdgeInsets.only(left: 165.0),
-                    )
-
-                  ],
-
-                ),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Container(
-                height: 40.0,
-                color: Colors.blue[100],
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.qr_code_scanner_rounded,
-                        color: Colors.grey[800],
-                      ),
-                      onPressed: () {},
-                    ),
-                    Text("Scan to Receive",
-                        style: TextStyle(color: Colors.grey[800], )),
-                    IconButton(
-                      icon: Icon(
-                        Icons.navigate_next_outlined,
-                        color: Colors.grey[800],
-
-                      ),
-                      onPressed: () {},
-                      padding: EdgeInsets.only(left: 150.0),
-                    )
-
-                  ],
-
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+void _launchURL() async =>
+    await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
+
+void _launchURL1() async =>
+    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+
+void _launchURL2() async =>
+    await canLaunch(url1) ? await launch(url1) : throw 'Could not launch $url1';
