@@ -39,11 +39,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: <Widget>[
+            SizedBox(
+              height: 50.0,
+            ),
             Container(
               margin: EdgeInsets.all(25),
               child: FlatButton(
                 child: Text('Pay with PayTM', style: TextStyle(fontSize: 20.0),),
-                color: Colors.blueAccent,
+                color: Colors.blue[400],
                 textColor: Colors.white,
                 onPressed: _launchURL,
               ),
@@ -52,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
               margin: EdgeInsets.all(25),
               child: FlatButton(
                 child: Text('Pay with PayPal', style: TextStyle(fontSize: 20.0),),
-                color: Colors.blueAccent,
+                color: Colors.blue[400],
                 textColor: Colors.white,
                 onPressed: _launchURL1,
               ),
@@ -61,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
               margin: EdgeInsets.all(25),
               child: FlatButton(
                 child: Text('Pay with GooglePay', style: TextStyle(fontSize: 20.0),),
-                color: Colors.blueAccent,
+                color: Colors.blue[400],
                 textColor: Colors.white,
                 onPressed: _launchURL2,
               ),

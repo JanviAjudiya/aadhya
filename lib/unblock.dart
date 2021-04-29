@@ -29,7 +29,7 @@ class unblock extends StatelessWidget {
           ),
         ),
       ),
-      home: HomePage(),
+      home: Unblock(),
     );
   }
 }
@@ -49,13 +49,17 @@ class _Unblock extends State<Unblock> {
 
   bool showLoader = false;
 
+  back() async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldGlobalKey,
         appBar: AppBar(
-          title: Text('UIBlock Demo'),
+          title: Text('UIBlock'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -63,6 +67,11 @@ class _Unblock extends State<Unblock> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              RaisedButton(
+                onPressed: back(),
+                color: Colors.blue,
+                child: Text('Show History'),
+              ),
               TextButton(
                 child: Text('Load Async'),
                 onPressed: () {
