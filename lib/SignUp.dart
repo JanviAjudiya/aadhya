@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sgp/Login.dart';
+
+import 'HomePage.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -9,6 +12,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   FirebaseAuth _auth = FirebaseAuth.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('sgp');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _name, _email, _password, _phone, _confirm_password;
@@ -91,7 +95,7 @@ class _SignUpState extends State<SignUp> {
                                 if (input.isEmpty) return 'Enter Name';
                               },
                               decoration: InputDecoration(
-                                labelText: 'Name',
+                                labelText: 'Username',
                                 prefixIcon: Icon(Icons.person),
                               ),
                               onSaved: (input) => _name = input),
@@ -161,7 +165,40 @@ class _SignUpState extends State<SignUp> {
                         SizedBox(height: 20),
                         RaisedButton(
                           padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
-                          onPressed: signUp,
+                          onPressed: ()async{
+                            _formKey.currentState.save();
+                            if (_formKey.currentState.validate()) {
+                              try {
+                                UserCredential userCredential = await FirebaseAuth
+                                    .instance
+                                    .createUserWithEmailAndPassword(
+                                  email: _email,
+                                  password: _password,
+                                );
+                                users.doc(_email).set({
+                                  'username': _name,
+                                  'email': _email,
+                                  'pass': _password,
+                                  'phone number': _phone,
+                                });
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomePage(),
+                                  ),
+                                );
+                              } on FirebaseAuthException catch (e) {
+                                if (e.code == 'weak-password') {
+                                  print('The password provided is too weak.');
+                                } else if (e.code == 'email-already-in-use') {
+                                  print(
+                                      'The account already exists for that email.');
+                                }
+                              } catch (e) {
+                                print(e);
+                              }
+                            }
+                          },
                           child: Text('SignUp',
                               style: TextStyle(
                                   color: Colors.white,

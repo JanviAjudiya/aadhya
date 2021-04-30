@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 
+
 class Collect extends StatefulWidget {
   @override
   _Collect createState() => _Collect();
@@ -26,6 +27,7 @@ class _Collect extends State<Collect> {
             width: 250,
             barcode: Barcode.qrCode(),
           ),
+
           // link
           Container(
             width: MediaQuery.of(context).size.width * .8,

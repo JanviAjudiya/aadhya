@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
+import 'package:sgp/HomePage.dart';
 
 
 class my_account extends StatefulWidget {
@@ -22,7 +23,7 @@ class _my_account extends State<my_account> {
   var pickedFile;
   final GlobalKey<FormState> _globalkey = GlobalKey<FormState>();
   final User adminuser = FirebaseAuth.instance.currentUser;
-  String _AdminName,_AdminEmail,_AdminUsername,_AdminDOB;
+  String name, location, email;
   CollectionReference collectionReference = FirebaseFirestore.instance.collection('admins');
 
   @override
@@ -54,7 +55,7 @@ class _my_account extends State<my_account> {
             onPressed: () {
               Navigator.pop(context);
             }),
-        title: Text('Edit Profile'),
+        title: Text('Profile'),
       ),
       body: SingleChildScrollView(
         child: Builder(
@@ -137,71 +138,96 @@ class _my_account extends State<my_account> {
                               Icons.person,
                               color: Colors.black87,
                             ),
-                            labelText: "Name",
-                            hintText: "Name",
-                          ),
-                          onChanged: (String value) {
-                            _AdminName = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.teal,
-                                )),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.green,
-                                width: 2,
-                              ),),
-                            prefixIcon: Icon(
-                              Icons.person,
+                            suffixIcon: Icon(
+                              Icons.edit,
                               color: Colors.black87,
                             ),
-                            labelText: "Username",
-                            hintText: "Username",
+                            labelText: "Full Name",
+                            hintText: "Full Name",
                           ),
                           onChanged: (String value) {
-                            _AdminUsername = value;
+                            name = value;
+                          },
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        StreamBuilder(
+                          stream: FirebaseFirestore.instance.collection('sgp').snapshots(),
+                          builder: (context, snapshot){
+                            if (!snapshot.hasData) return Text('Loading data... Please Wait...');
+                            return Container(
+                              child: InputDecorator(
+                                decoration: InputDecoration(
+                                  labelText: 'Username',
+                                  labelStyle: TextStyle(
+                                    color: Colors.blue,
+                                  ),
+                                  prefixIcon: Icon(Icons.person,  color: Colors.black87,),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide:  BorderSide(color: Colors.green),
+                                  ),
+                                ),
+                                child: Text(snapshot.data.documents[0]['username'].toString(), style: TextStyle(fontSize: 17.0, color: Colors.black.withOpacity(0.6)),),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        StreamBuilder(
+                          stream: FirebaseFirestore.instance.collection('sgp').snapshots(),
+                          builder: (context, snapshot){
+                            if (!snapshot.hasData) return Text('Loading data... Please Wait...');
+                            return Container(
+                              child: InputDecorator(
+                                decoration: InputDecoration(
+                                  labelText: 'Email',
+                                  labelStyle: TextStyle(
+                                    color: Colors.blue,
+                                  ),
+                                  prefixIcon: Icon(Icons.person,  color: Colors.black87,),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide:  BorderSide(color: Colors.green),
+                                  ),
+                                ),
+                                child: Text(snapshot.data.documents[0]['email'].toString(), style: TextStyle(fontSize: 17.0, color: Colors.black.withOpacity(0.6)),),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        StreamBuilder(
+                          stream: FirebaseFirestore.instance.collection('sgp').snapshots(),
+                          builder: (context, snapshot){
+                            if (!snapshot.hasData) return Text('Loading data... Please Wait...');
+                            return Container(
+                              child: InputDecorator(
+                                decoration: InputDecoration(
+                                  labelText: 'Phone Number',
+                                    labelStyle: TextStyle(
+                                        color: Colors.blue,
+                                    ),
+                                  prefixIcon: Icon(Icons.person,  color: Colors.black87,),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                                child: Text(snapshot.data.documents[0]['phone number'].toString(), style: TextStyle(fontSize: 17.0, color: Colors.black.withOpacity(0.6)),),
+                              ),
+                            );
                           },
                         ),
                         SizedBox(
                           height: 20.0,
                         ),
                         TextFormField(
-                          // validator: (value) {
-                          //   if (value.isEmpty) return "Email can't be empty";
-                          //   return null;
-                          // },
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.teal,
-                                )),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.green,
-                                  width: 2,
-                                )),
-                            prefixIcon: Icon(
-                              Icons.person,
-                              color: Colors.black87,
-                            ),
-                            labelText: "Email",
-                            hintText: "Email",
-                          ),
-                          onChanged: (String value) {
-                            _AdminEmail = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        TextFormField(
+
                           validator: (value) {
                             if (value.isEmpty) return "DOB can't be empty";
                             return null;
@@ -220,11 +246,16 @@ class _my_account extends State<my_account> {
                               Icons.person,
                               color: Colors.black87,
                             ),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.edit,
+                                color: Colors.black87,),
+                              onPressed: () {},
+                            ),
                             labelText: "Location",
                             hintText: "Location",
                           ),
                           onChanged: (String value) {
-                            _AdminDOB = value;
+                            location = value;
                           },
                         ),
                         SizedBox(
@@ -263,12 +294,10 @@ class _my_account extends State<my_account> {
                                 color: Colors.blue,
                                 onPressed: () {
                                   uploadPic(context);
-                                  collectionReference.doc(_AdminEmail)
+                                  collectionReference.doc(email)
                                       .update({
-                                    "name": _AdminName,
-                                    "username": _AdminUsername,
-                                    "email": _AdminEmail,
-                                    "location":_AdminDOB,
+                                    "name": name,
+                                    "location":location,
                                     "url": url
                                   });
                                 },
@@ -276,7 +305,7 @@ class _my_account extends State<my_account> {
                                 elevation: 4.0,
                                 splashColor: Colors.blueGrey,
                                 child: Text(
-                                  'Submit',
+                                  'Edit Profile',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 16.0),
                                 ),

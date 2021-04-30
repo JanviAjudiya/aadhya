@@ -113,13 +113,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  decimal:
-    dependency: transitive
-    description:
-      name: decimal
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.5"
   dio:
     dependency: "direct main"
     description:
@@ -527,13 +520,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
-  rational:
-    dependency: transitive
-    description:
-      name: rational
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.8"
   razorpay_flutter:
     dependency: "direct main"
     description:
@@ -588,13 +574,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.19"
-  tuple:
-    dependency: transitive
-    description:
-      name: tuple
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
   typed_data:
     dependency: transitive
     description:
@@ -609,20 +588,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  upi_india:
-    dependency: "direct main"
-    description:
-      name: upi_india
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0+1"
-  upi_pay:
-    dependency: "direct main"
-    description:
-      name: upi_pay
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.4"
   url_launcher:
     dependency: "direct main"
     description:
