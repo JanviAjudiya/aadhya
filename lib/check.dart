@@ -77,7 +77,6 @@ class _CheckRazorState extends State<CheckRazor> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     options = {
@@ -98,7 +97,6 @@ class _CheckRazorState extends State<CheckRazor> {
 
   @override
   Widget build(BuildContext context) {
-    // print("razor runtime --------: ${_razorpay.runtimeType}");
     return Scaffold(
       body: FutureBuilder(
           future: payData(),

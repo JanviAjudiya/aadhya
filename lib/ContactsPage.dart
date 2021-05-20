@@ -18,8 +18,7 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   Future<void> getContacts() async {
-    //We already have permissions for contact when we get to this page, so we
-    // are now just retrieving it
+    //We already have permissions for contact when we get to this page, so we are now just retrieving it
     final Iterable<Contact> contacts = await ContactsService.getContacts();
     setState(() {
       _contacts = contacts;
