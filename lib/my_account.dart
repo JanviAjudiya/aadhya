@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
-import 'package:sgp/HomePage.dart';
 
 
 class my_account extends StatefulWidget {
@@ -152,31 +150,7 @@ class _my_account extends State<my_account> {
                         SizedBox(
                           height: 20.0,
                         ),
-                        StreamBuilder(
-                          stream: FirebaseFirestore.instance.collection('sgp').snapshots(),
-                          builder: (context, snapshot){
-                            if (!snapshot.hasData) return Text('Loading data... Please Wait...');
-                            return Container(
-                              child: InputDecorator(
-                                decoration: InputDecoration(
-                                  labelText: 'Username',
-                                  labelStyle: TextStyle(
-                                    color: Colors.blue,
-                                  ),
-                                  prefixIcon: Icon(Icons.person,  color: Colors.black87,),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide:  BorderSide(color: Colors.green),
-                                  ),
-                                ),
-                                child: Text(snapshot.data.documents[0]['username'].toString(), style: TextStyle(fontSize: 17.0, color: Colors.black.withOpacity(0.6)),),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
+
                         StreamBuilder(
                           stream: FirebaseFirestore.instance.collection('sgp').snapshots(),
                           builder: (context, snapshot){
@@ -188,7 +162,7 @@ class _my_account extends State<my_account> {
                                   labelStyle: TextStyle(
                                     color: Colors.blue,
                                   ),
-                                  prefixIcon: Icon(Icons.person,  color: Colors.black87,),
+                                  prefixIcon: Icon(Icons.email,  color: Colors.black87,),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide:  BorderSide(color: Colors.green),
@@ -202,25 +176,36 @@ class _my_account extends State<my_account> {
                         SizedBox(
                           height: 20.0,
                         ),
-                        StreamBuilder(
-                          stream: FirebaseFirestore.instance.collection('sgp').snapshots(),
-                          builder: (context, snapshot){
-                            if (!snapshot.hasData) return Text('Loading data... Please Wait...');
-                            return Container(
-                              child: InputDecorator(
-                                decoration: InputDecoration(
-                                  labelText: 'Phone Number',
-                                    labelStyle: TextStyle(
-                                        color: Colors.blue,
-                                    ),
-                                  prefixIcon: Icon(Icons.person,  color: Colors.black87,),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                ),
-                                child: Text(snapshot.data.documents[0]['phone number'].toString(), style: TextStyle(fontSize: 17.0, color: Colors.black.withOpacity(0.6)),),
-                              ),
-                            );
+                        TextFormField(
+
+                          validator: (value) {
+                            if (value.isEmpty) return "Phone number can not be empty";
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.teal,
+                                )),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.green,
+                                  width: 2,
+                                )),
+                            prefixIcon: Icon(
+                              Icons.phone,
+                              color: Colors.black87,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.edit,
+                                color: Colors.black87,),
+                              onPressed: () {},
+                            ),
+                            labelText: "Phone number",
+                            hintText: "Phone number",
+                          ),
+                          onChanged: (String value) {
+                            location = value;
                           },
                         ),
                         SizedBox(
@@ -243,7 +228,7 @@ class _my_account extends State<my_account> {
                                   width: 2,
                                 )),
                             prefixIcon: Icon(
-                              Icons.person,
+                              Icons.location_city,
                               color: Colors.black87,
                             ),
                             suffixIcon: IconButton(

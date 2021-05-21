@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sgp/Login.dart';
-
-import 'HomePage.dart';
+import 'package:sgp/register_individual.dart';
+import 'package:sgp/register_owner.dart';
+import 'fade_animation.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -11,13 +12,13 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  bool _isHidden = true;
   FirebaseAuth _auth = FirebaseAuth.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('sgp');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _name, _email, _password, _phone, _confirm_password;
+  String _name, _email, _password;
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
 
   checkAuthentication() async {
     _auth.authStateChanges().listen((user) async {
@@ -79,9 +80,26 @@ class _SignUpState extends State<SignUp> {
               children: <Widget>[
                 Container(
                   height: 400,
-                  child: Image(
-                    image: AssetImage("images/signup.jpg"),
-                    fit: BoxFit.contain,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('images/background.png'),
+                          fit: BoxFit.fill
+                      )
+                  ),
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned(
+                        child: FadeAnimation(1.6, Container(
+                          margin: EdgeInsets.only(top: 50),
+                          child: Center(
+                            child: Text("SignUp", style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),),
+                          ),
+                        )),
+                      )
+                    ],
                   ),
                 ),
                 Container(
@@ -89,138 +107,220 @@ class _SignUpState extends State<SignUp> {
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
-                        Container(
-                          child: TextFormField(
-                              validator: (input) {
-                                if (input.isEmpty) return 'Enter Name';
-                              },
-                              decoration: InputDecoration(
-                                labelText: 'Username',
-                                prefixIcon: Icon(Icons.person),
+                        FadeAnimation(1.8, Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromRGBO(143, 148, 251, .2),
+                                    blurRadius: 20.0,
+                                    offset: Offset(0, 10)
+                                )
+                              ]
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                    border: Border(bottom: BorderSide(
+                                        color: Colors.grey[100]))
+                                ),
+                                child: Container(
+                                  child: TextFormField(
+                                      validator: (input) {
+                                        if (input.isEmpty) return 'Enter Name';
+                                      },
+                                      decoration: InputDecoration(
+                                          hintText: 'Full Name',
+                                          border: InputBorder.none,
+                                          hintStyle: TextStyle(
+                                              color: Colors.grey[400]),
+                                          prefixIcon: Icon(Icons.person, color: Colors.grey[400],)),
+                                      onSaved: (input) => _name = input
+                                  ),
+                                ),
                               ),
-                              onSaved: (input) => _name = input),
-                        ),
-                        Container(
-                          child: TextFormField(
-                              validator: (input) {
-                                if (input.isEmpty) return 'Enter Email';
-                                if (!RegExp(r'\S+@\S+\.\S+').hasMatch(input)) {
-                                  return 'Please enter a valid email address';
-                                }
-                              },
-                              decoration: InputDecoration(
-                                  labelText: 'Email',
-                                  prefixIcon: Icon(Icons.email)),
-                              onSaved: (input) => _email = input),
-                        ),
-                        Container(
-                          child: TextFormField(
-                              keyboardType: TextInputType.number,
-                              validator: (input) {
-                                if (input.isEmpty) return 'Enter Phone Number';
-                                if(input.length < 10 || input.length > 10)
-                                {
-                                  return 'Enter valid 10 digit phone number';
-                                }
-                              },
-                              decoration: InputDecoration(
-                                  labelText: 'Phone Number',
-                                  prefixIcon: Icon(Icons.phone)),
-                              onSaved: (input) => _phone = input),
-                        ),
-                        Container(
-                          child: TextFormField(
-                              controller: _passwordController,
-                              validator: (input) {
-                                if (input.length < 6)
-                                  return 'Provide Minimum 6 Character';
-                                Pattern pattern =
-                                    r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-                                RegExp regex = new RegExp(pattern);
-                                print(input);
-                                if (!regex.hasMatch(input))
-                                  return 'Enter valid password';
-                              },
-                              decoration: InputDecoration(
-                                labelText: 'Password',
-                                prefixIcon: Icon(Icons.lock),
+                              Container(
+                                padding: EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                    border: Border(bottom: BorderSide(
+                                        color: Colors.grey[100]))
+                                ),
+                                child: Container(
+                                  child: TextFormField(
+                                      validator: (input) {
+                                        if (input.isEmpty) return 'Enter Email';
+                                        if (!RegExp(r'\S+@\S+\.\S+').hasMatch(input)) {
+                                          return 'Please enter a valid email address';
+                                        }
+                                      },
+                                      decoration: InputDecoration(
+                                          hintText: 'Email',
+                                          border: InputBorder.none,
+                                          hintStyle: TextStyle(
+                                              color: Colors.grey[400]),
+                                          prefixIcon: Icon(Icons.email, color: Colors.grey[400],)),
+                                      onSaved: (input) => _email = input
+                                  ),
+                                ),
                               ),
-                              obscureText: true,
-                              onSaved: (input) => _password = input),
-                        ),
-                        Container(
-                          child: TextFormField(
-                              controller: _confirmPasswordController,
-                              validator: (input) {
-                                if (input != _passwordController.text)
-                                  return 'Password doesnot match';
-                              },
-                              decoration: InputDecoration(
-                                labelText: 'Confirm Password',
-                                prefixIcon: Icon(Icons.lock),
+                              Container(
+                                padding: EdgeInsets.all(8.0),
+                                child: TextFormField(
+                                    controller: _passwordController,
+                                    validator: (input) {
+                                      if (input.length < 6)
+                                        return 'Provide Minimum 8 Character';
+                                      Pattern pattern =
+                                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+                                      RegExp regex = new RegExp(pattern);
+                                      print(input);
+                                      if (!regex.hasMatch(input))
+                                        return 'Enter valid password';
+                                    },
+                                    obscureText: _isHidden,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Password',
+                                      hintStyle: TextStyle(
+                                          color: Colors.grey[400]),
+                                      prefixIcon: Icon(Icons.lock, color: Colors.grey[400],),
+                                      suffix: InkWell(
+                                        onTap: _togglePasswordView,
+                                        child: Icon(
+                                          _isHidden
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: Colors.grey[400],
+                                        ),
+                                      ),
+                                    ),
+                                    onSaved: (input) => _password = input
+                                ),
                               ),
-                              obscureText: true,
-                              onSaved: (input) => _confirm_password = input),
+                              SizedBox(height: 10,),
+
+                              MaterialButton(
+                                child: Container(
+                                  height: 50,
+
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: LinearGradient(
+                                          colors: [
+                                            Color.fromRGBO(143, 148, 251, 1),
+                                            Color.fromRGBO(143, 148, 251, .6),
+                                          ]
+                                      )
+                                  ),
+                                  child: Center(
+                                    child: Text("Register as Owner", style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),),
+
+                                  ),
+                                ),
+                                onPressed: ()async {
+                                  _formKey.currentState.save();
+                                  if (_formKey.currentState.validate()) {
+                                    try {
+                                      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                        email: _email,
+                                        password: _password,
+                                      );
+                                      users.doc(_email).set({
+                                        'email': _email,
+                                        'pass': _password,
+                                        'name': _name,
+                                      });
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => OSignUp()));
+                                    } on FirebaseAuthException catch (e) {
+                                      if (e.code == 'weak-password') {
+                                        print('The password provided is too weak.');
+                                      } else if (e.code == 'email-already-in-use') {
+                                        print(
+                                            'The account already exists for that email.');
+                                      }
+                                    } catch (e) {
+                                      print(e);
+                                    }
+                                  };
+                                },
+                              ),
+
+                              SizedBox(
+                                height: 10,
+                              ),
+
+                              MaterialButton(
+                                child: Container(
+                                  height: 50,
+
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: LinearGradient(
+                                          colors: [
+                                            Color.fromRGBO(143, 148, 251, 1),
+                                            Color.fromRGBO(143, 148, 251, .6),
+                                          ]
+                                      )
+                                  ),
+                                  child: Center(
+                                    child: Text("Register as Individual", style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),),
+
+                                  ),
+                                ),
+                                onPressed: ()async {
+                                  _formKey.currentState.save();
+                                  if (_formKey.currentState.validate()) {
+                                    try {
+                                      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                        email: _email,
+                                        password: _password,
+                                      );
+                                      users.doc(_email).set({
+                                        'email': _email,
+                                        'pass': _password,
+                                      });
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ISignUp()));
+                                    } on FirebaseAuthException catch (e) {
+                                      if (e.code == 'weak-password') {
+                                        print('The password provided is too weak.');
+                                      } else if (e.code == 'email-already-in-use') {
+                                        print(
+                                            'The account already exists for that email.');
+                                      }
+                                    } catch (e) {
+                                      print(e);
+                                    }
+                                  };
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                         ),
                         SizedBox(height: 20),
-                        RaisedButton(
-                          padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
-                          onPressed: ()async{
-                            _formKey.currentState.save();
-                            if (_formKey.currentState.validate()) {
-                              try {
-                                UserCredential userCredential = await FirebaseAuth
-                                    .instance
-                                    .createUserWithEmailAndPassword(
-                                  email: _email,
-                                  password: _password,
-                                );
-                                users.doc(_email).set({
-                                  'username': _name,
-                                  'email': _email,
-                                  'pass': _password,
-                                  'phone number': _phone,
-                                });
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomePage(),
-                                  ),
-                                );
-                              } on FirebaseAuthException catch (e) {
-                                if (e.code == 'weak-password') {
-                                  print('The password provided is too weak.');
-                                } else if (e.code == 'email-already-in-use') {
-                                  print(
-                                      'The account already exists for that email.');
-                                }
-                              } catch (e) {
-                                print(e);
-                              }
-                            }
-                          },
-                          child: Text('SignUp',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold)),
-                          color: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        )
+
                       ],
                     ),
                   ),
                 ),
                 SizedBox(height: 20),
-                GestureDetector(
-                  child: Text('Already have an account?', style: TextStyle(fontWeight: FontWeight.bold),),
-                  onTap: navigateToLogin,
-                )
               ],
             ),
           ),
         ));
+  }
+
+  void _togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sgp/Signup.dart';
-import 'package:sgp/Start.dart';
 import 'package:sgp/Login.dart';
+import 'package:sgp/splash.dart';
 import 'HomePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -20,15 +20,13 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.blue
       ),
       debugShowCheckedModeBanner: false,
-      home:
-
-      HomePage(),
+      home: Splash(),
 
       routes: <String,WidgetBuilder>{
 
         "Login" : (BuildContext context)=>Login(),
         "SignUp":(BuildContext context)=>SignUp(),
-        "start":(BuildContext context)=>Start(),
+        "start":(BuildContext context)=>Splash(),
       },
 
     );

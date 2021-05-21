@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'Login.dart';
+import 'SignUp.dart';
+import 'fade_animation.dart';
+
 class Start extends StatefulWidget {
   @override
   _StartState createState() => _StartState();
@@ -24,73 +28,81 @@ class _StartState extends State<Start> {
       body: Container(
         child: Column(
           children: <Widget>[
-            SizedBox(height: 35.0),
             Container(
               height: 400,
-              child: Image(
-                image: AssetImage("images/welcome.png"),
-                fit: BoxFit.contain,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('images/background.png'),
+                      fit: BoxFit.fill
+                  )
+              ),
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    child: FadeAnimation(1.6, Container(
+                      margin: EdgeInsets.only(top: 50),
+                      child: Center(
+                        child: Text("Home", style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold),),
+                      ),
+                    )),
+                  )
+                ],
               ),
             ),
-            SizedBox(height: 20),
-            RichText(
-                text: TextSpan(
-                    text: 'Welcome to ',
-                    style: TextStyle(
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'Online Banking',
-                          style: TextStyle(
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue))
-                    ])),
-            SizedBox(height: 10.0),
-            Text(
-              'Experience banking at your Home',
-              style: TextStyle(color: Colors.black),
+            MaterialButton(
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                        colors: [
+                          Color.fromRGBO(143, 148, 251, 1),
+                          Color.fromRGBO(143, 148, 251, .6),
+                        ]
+                    )
+                ),
+                child: Center(
+                  child: Text("SignUp", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+
+                ),
+              ),
+              onPressed: () async{
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUp()),
+                );
+              },
             ),
-            SizedBox(height: 30.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                    padding: EdgeInsets.only(left: 30, right: 30),
-                    onPressed: navigateToLogin,
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    color: Colors.blue),
-                SizedBox(width: 20.0),
-                RaisedButton(
-                    padding: EdgeInsets.only(left: 30, right: 30),
-                    onPressed: navigateToRegister,
-                    child: Text(
-                      'REGISTER',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    color: Colors.blue),
-              ],
+            SizedBox(
+              height: 30,
             ),
-            SizedBox(height: 20.0),
+            MaterialButton(
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                        colors: [
+                          Color.fromRGBO(143, 148, 251, 1),
+                          Color.fromRGBO(143, 148, 251, .6),
+                        ]
+                    )
+                ),
+                child: Center(
+                  child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+
+                ),
+              ),
+              onPressed: () async{
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Login()),
+                );
+              },
+            )
           ],
         ),
       ),

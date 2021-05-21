@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'SignUp.dart';
+import './Login_email.dart';
+
+import 'Login_mobile.dart';
+import 'fade_animation.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -9,130 +12,132 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  String _email, _password;
-
-  checkAuthentification() async {
-    _auth.authStateChanges().listen((user) {
-      if (user != null) {
-        print(user);
-
-        Navigator.pushReplacementNamed(context, "/");
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    this.checkAuthentification();
-  }
-
-  login() async {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-
-      try {
-        await _auth.signInWithEmailAndPassword(
-            email: _email, password: _password);
-      } catch (e) {
-        showError(e.message);
-        print(e);
-      }
-    }
-  }
-
-  showError(String errormessage) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('ERROR'),
-            content: Text(errormessage),
-            actions: <Widget>[
-              FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'))
-            ],
-          );
-        });
-  }
-
-  navigateToSignUp() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: 400,
-                  child: Image(
-                    image: AssetImage("images/background.png"),
-                    fit: BoxFit.contain,
-                  ),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 400,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('images/background.png'),
+                        fit: BoxFit.fill
+                    )
                 ),
-                Container(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: TextFormField(
-                              validator: (input) {
-                                if (input.isEmpty) return 'Enter Email';
-                              },
-                              decoration: InputDecoration(
-                                  labelText: 'Email',
-                                  prefixIcon: Icon(Icons.email)),
-                              onSaved: (input) => _email = input),
+                child: Stack(
+                  children: <Widget>[
+                    Positioned(
+                      child: FadeAnimation(1.6, Container(
+                        margin: EdgeInsets.only(top: 50),
+                        child: Center(
+                          child: Text("Login", style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold),),
                         ),
-                        Container(
-                          child: TextFormField(
-                              validator: (input) {
-                                if (input.length < 6)
-                                  return 'Provide Minimum 6 Character';
-                              },
-                              decoration: InputDecoration(
-                                labelText: 'Password',
-                                prefixIcon: Icon(Icons.lock),
+                      )),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(30.0),
+                child: Column(
+                  children: <Widget>[
+                    FadeAnimation(1.8, Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Color.fromRGBO(143, 148, 251, .2),
+                                blurRadius: 20.0,
+                                offset: Offset(0, 10)
+                            )
+                          ]
+                      ),
+                      child: Column(
+                        children: <Widget>[
+
+
+                          MaterialButton(
+                            child: Container(
+                              height: 50,
+
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: LinearGradient(
+                                      colors: [
+                                        Color.fromRGBO(143, 148, 251, 1),
+                                        Color.fromRGBO(143, 148, 251, .6),
+                                      ]
+                                  )
                               ),
-                              obscureText: true,
-                              onSaved: (input) => _password = input),
-                        ),
-                        SizedBox(height: 20),
-                        RaisedButton(
-                          padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
-                          onPressed: login,
-                          child: Text('LOGIN',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold)),
-                          color: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                              child: Center(
+                                child: Text("Login with Mobile", style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),),
+
+                              ),
+                            ),
+                            onPressed: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => MLogin()),
+                              );
+                            },
                           ),
-                        )
-                      ],
+
+                          SizedBox(height: 10,),
+
+                          MaterialButton(
+                            child: Container(
+                              height: 50,
+
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: LinearGradient(
+                                      colors: [
+                                        Color.fromRGBO(143, 148, 251, 1),
+                                        Color.fromRGBO(143, 148, 251, .6),
+                                      ]
+                                  )
+                              ),
+                              child: Center(
+                                child: Text("Login with Email", style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),),
+
+                              ),
+                            ),
+                            onPressed: () async{
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ELogin()),
+                              );
+                            },
+                          ),
+
+
+
+                        ],
+                      ),
+
                     ),
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 20),
-                GestureDetector(
-                  child: Text('Create an Account?', style: TextStyle(fontWeight: FontWeight.bold),),
-                  onTap: navigateToSignUp,
-                )
-              ],
-            ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
